@@ -2,6 +2,6 @@
 #include<string.h>
 
 void main(){
-
-    system("gcc visualiser.c && ./a.out");
+    char string[1000];
+    getdelim();
 }

@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "bit": "c",
+        "bitset": "c",
+        "chrono": "c",
+        "condition_variable": "c",
+        "algorithm": "c",
+        "istream": "c",
+        "limits": "c",
+        "mutex": "c",
+        "streambuf": "c",
+        "thread": "c"
+    }
+}

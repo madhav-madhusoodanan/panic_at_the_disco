@@ -10,7 +10,7 @@ void plot(char * fname) {
     exit(0);
 }
 
-int main(){
+/* int main(){
     plot("SampleInput.csv");
     return 0;
-}
+} */
