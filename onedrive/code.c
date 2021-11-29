@@ -527,13 +527,33 @@ int print_website_names_user_input(int* websites, unsigned int side){
     scanf("%s", input);
     for (; input[0] !='q' ;)
     {
-        sscanf(input, "%d", index);
+        sscanf(input, "%d", &index);
         if(index > 0 && index < side && websites[index] == 1) printf("YES");
-        else print("NO");
+        else printf("NO");
         
         scanf("%s", input);
     }
     
+}
+
+int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
+    int option;
+    option = print_menu_4();
+
+    switch (option)
+    {
+        case 1:
+            break;
+    
+        case 2:
+            break;
+
+        case 3:
+            break;
+
+        default:
+            break;
+    }
 }
 
 int menu_4_handler(char* names[], unsigned int* links, unsigned int side){
@@ -607,25 +627,7 @@ int print_menu_5() {
     return option;
 }
 
-int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
-    int option;
-    option = print_menu_4();
 
-    switch (option)
-    {
-        case 1:
-            break;
-    
-        case 2:
-            break;
-
-        case 3:
-            break;
-
-        default:
-            break;
-    }
-}
 
 int main() {
     unsigned int website_count = count_number_of_websites("SampleInput.csv");
