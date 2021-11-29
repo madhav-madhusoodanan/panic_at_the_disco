@@ -21,9 +21,10 @@ def show_graph(adj,mylabels):
     rows, cols = np.where(adj==1)
     edges = zip(rows.tolist(),cols.tolist())
     
-    gr = nx.DiGraph()
+    # change to DiGraph later
+    gr = nx.path_graph(len(mylabels))
     gr.add_edges_from(edges)
-    nx.draw(gr,node_size=500,labels=mylabels,with_labels=True, arrows=True)
+    nx.draw(gr.to_undirected(),node_size=500,labels=mylabels,with_labels=True, arrows=False)
     plt.show()
     plt.close()
     
