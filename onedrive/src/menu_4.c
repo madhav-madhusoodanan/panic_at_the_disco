@@ -89,7 +89,6 @@ int is_reflexive(unsigned int* links, unsigned int side) {
 
     for (int i = 0; i < side; i++)
     {
-        printf("\t%d", links[(side + 1) * i]);
         if(links[(side + 1) * i] == 0) {
             return 0;
         }

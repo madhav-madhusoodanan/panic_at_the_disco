@@ -62,10 +62,10 @@ int main() {
 
         case 8:
             is_poset = is_transitive(links, website_count) && 
-                           is_anti_symmetric(links, website_count) && 
-                           is_reflexive(links, website_count);
+                       is_anti_symmetric(links, website_count) && 
+                       is_reflexive(links, website_count);
 
-            if (print_yes_or_no(is_poset == 0))
+            if (!print_yes_or_no(is_poset == 0))
                 menu_4_handler(website_names, links, website_count);
             break;
 

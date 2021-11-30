@@ -5,10 +5,10 @@ int is_transitive(unsigned int* links, unsigned int side){
         for(int j = 0; j < side; j++){
             for(int k = 0; k < side; k++){
                 if(
-                    !links[i * side + j] || 
-                    !links[j * side + k] || 
-                    !links[i * side + k]
+                    links[i * side + j] &&
+                    links[j * side + k]
                 ) 
+                if(!links[i * side + k])
                     return 0;
             }
         }
@@ -30,7 +30,7 @@ int is_there_a_shortcut(unsigned int* links, unsigned int side, unsigned int sta
 int check_if_all_have_shortcuts(unsigned int* links, unsigned int side){
     for(int i = 0; i < side; i++){
         for(int j = 0; j < side; j++){
-            if(is_there_a_shortcut(links, side, i, j) == 0)return 0;
+            if(is_there_a_shortcut(links, side, i, j) == 0) return 0;
         }
     }
     return 1;
@@ -223,7 +223,7 @@ void matrix_to_hasse(unsigned int* links, unsigned int* hasse_links, int side){
 int print_main_menu() {
     printf("\n1. Does every website has a link to itself?\n");
     printf("2. Is it possible to always return back to the previous website from the current website in one step?\n");
-    printf("3. Does every website has all th links to the websites which are reachable from it?\n");
+    printf("3. Does every website has all the links to the websites which are reachable from it?\n");
     printf("4. Does there exist any website that contains a link to itself?\n");
     printf("5. Is it impossible to return to the previous website from the current website in one step?\n");
     printf("6. Is it impossible to return to the previous website from the current website in one step (excluding the cases where the current and previous website is the same)?\n");
