@@ -254,6 +254,77 @@ int* self_centred_websites_from(unsigned int* links, int* websites, unsigned int
     return websites;
 }
 
+int* lub_for_two_websites(unsigned int* links, int* websites_in_question, int* websites, unsigned int side){
+    /* websites in question have the indices of the websites in question, not 0 or 1 */
+    /* they are of size 2, (a and b) */
+
+    for (int i = 0; i < side; i++)
+    {
+        /* 1. find out websites that are common destination
+            2. find out if all 3 have the same destinations including the 3rd one */
+        websites[i] = 0;
+
+        int a_coordinate = websites_in_question[0] * side + i;
+        int b_coordinate = websites_in_question[1] * side + i;
+        if(links[a_coordinate] && links[b_coordinate]) websites[i] = 1;
+    }
+
+    websites[websites_in_question[0]] = 1;
+    websites[websites_in_question[1]] = 1;
+    
+    for (int i = 0; i < side; i++)
+    {
+        for (int j = 0; j < side; j++)
+        {
+            if(websites[j]){
+                if(!links[j * side + i] && j != websites_in_question[0] && j != websites_in_question[1])
+                    websites[j] = 0;
+            }
+        }
+    }
+    
+    websites[websites_in_question[0]] = 0;
+    websites[websites_in_question[1]] = 0;
+
+    return websites;
+}
+
+int* glb_for_two_websites(unsigned int* links, int* websites_in_question, int* websites, unsigned int side){
+    /* websites in question have the indices of the websites in question, not 0 or 1 */
+    /* they are of size 2, (a and b) */
+
+    int websites[side];
+    for (int i = 0; i < side; i++)
+    {
+        /* 1. find out websites that are common destination
+            2. find out if all 3 have the same destinations including the 3rd one */
+        websites[i] = 0;
+
+        int a_coordinate = websites_in_question[0] + side * i;
+        int b_coordinate = websites_in_question[1] + side * i;
+        if(links[a_coordinate] && links[b_coordinate]) websites[i] = 1;
+    }
+
+    websites[websites_in_question[0]] = 1;
+    websites[websites_in_question[1]] = 1;
+    
+    for (int i = 0; i < side; i++)
+    {
+        for (int j = 0; j < side; j++)
+        {
+            if(websites[j]){
+                if(!links[i * side + j] && j != websites_in_question[0] && j != websites_in_question[1])
+                    websites[j] = 0;
+            }
+        }
+    }
+    
+    websites[websites_in_question[0]] = 0;
+    websites[websites_in_question[1]] = 0;
+
+    return websites;
+}
+
 int* check_for_lattice(unsigned int* links, int* websites, unsigned int side){
     return websites;
 }
@@ -481,7 +552,7 @@ int print_menu_2() {
     else return 1;
 }
 
-void cleanup(char* names[],/*  unsigned int* links, */ unsigned int website_count) {
+void cleanup(char* names[], unsigned int website_count) {
     for (int i = 0; i < website_count; i++)
     {
         free(names[i]);
@@ -538,14 +609,19 @@ int print_website_names_user_input(int* websites, unsigned int side){
 
 int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
     int option;
-    option = print_menu_4();
-
+    option = print_menu_5();
+    int websites[side];
+    int websites_in_question[2];
     switch (option)
     {
         case 1:
+            lub_for_two_websites(links, websites_in_question, websites, side);
+            print_website_names(names, websites, side);
             break;
     
         case 2:
+            glb_for_two_websites(links, websites_in_question, websites, side);
+            print_website_names(names, websites, side);
             break;
 
         case 3:
@@ -556,7 +632,7 @@ int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
     }
 }
 
-int menu_4_handler(char* names[], unsigned int* links, unsigned int side){
+void menu_4_handler(char* names[], unsigned int* links, unsigned int side){
 
     int option;
     int websites[side];
@@ -631,7 +707,6 @@ int print_menu_5() {
 
 int main() {
     unsigned int website_count = count_number_of_websites("SampleInput.csv");
-    // int arr[] = {1, 1 ,1 ,1 , 1};
     int is_poset;
     char* website_names[website_count];
     unsigned int links[website_count * website_count];
@@ -643,32 +718,24 @@ int main() {
         switch (option)
         {
         case 1:
-            if (print_yes_or_no(is_reflexive(links, website_count) == 0)) 
-            {
-
-            }
+            if (print_yes_or_no(is_reflexive(links, website_count) == 0))
+                menu_2_handler(website_names, links, website_count, 1);
             break;
         
         case 2:
             if (print_yes_or_no(is_symmetric(links, website_count) == 0))
-            {
-                
-            }
+                menu_2_handler(website_names, links, website_count, 1);
             break;
 
         case 3: 
             /* just confirm what the question actually means... */
             if (print_yes_or_no(check_if_all_have_shortcuts(links, website_count) == 0))
-            {
-                
-            }
+                    menu_2_handler(website_names, links, website_count, 1);
             exit(0);
 
         case 4:
             if (print_yes_or_no(self_linking_websites(links, website_count) == 0))
-            {
-                
-            }
+                    menu_2_handler(website_names, links, website_count, 1);
             break;
 
         case 5:
@@ -683,18 +750,17 @@ int main() {
 
         case 7: /* test */
             /* print_website_names(website_names, arr, website_count); */ // THIS WORKS
-            convert_to_csv(website_names, links, website_count);
-            plot(TEMP_FILE);
+            if(1)
+                menu_2_handler(website_names, links, website_count, 1);
             break;
 
         case 8:
             is_poset = is_transitive(links, website_count) && 
                            is_anti_symmetric(links, website_count) && 
                            is_reflexive(links, website_count);
+
             if (print_yes_or_no(is_poset))
-            {
-                
-            }
+                menu_4_handler(website_names, links, website_count);
             break;
 
         default:
@@ -703,6 +769,28 @@ int main() {
         option = print_main_menu();
     }
     cleanup(website_names, /* links, */ website_count);
+}
+
+void menu_2_handler(char* website_names[], int* links, int website_count, int menu){
+    printf("\nDo you want to know how the network will look like if we add minimum links to satisfy property? [y/n]");
+
+    char c;
+    scanf("%c", &c);
+    if(c == 'n') return;
+
+    switch(menu){
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+    }
+
+    convert_to_csv(website_names, links, website_count);
+    plot(TEMP_FILE);
 }
 
 /* 
@@ -722,3 +810,4 @@ int main() {
 /* HARD THINGS
 1. menu 5
 2. hasse diagrams */
+
