@@ -1,1 +1,1 @@
-./dist/program
+cd dist && ./program

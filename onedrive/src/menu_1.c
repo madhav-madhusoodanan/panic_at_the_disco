@@ -1,4 +1,5 @@
 
+
 int is_transitive(unsigned int* links, unsigned int side){
     for(int i = 0; i < side; i++){
         for(int j = 0; j < side; j++){
@@ -15,7 +16,6 @@ int is_transitive(unsigned int* links, unsigned int side){
     return 1;
 }
 
-int to_transitive(unsigned int* links, unsigned int side){}
 
 int is_there_a_shortcut(unsigned int* links, unsigned int side, unsigned int start, unsigned int end){
     if(start == end) return 1;
@@ -67,7 +67,26 @@ int is_symmetric(unsigned int* links, unsigned int side) {
     return 1;
 }
 
+void to_symmetric(unsigned int* links, unsigned int side) {
+    /* 
+     * Symmetric matrices means a matrix whose transpose will equal itself.
+     * the speciality of this matrix is that it is possible to go to the previous website from the current website
+     * in one go.
+     * 
+     * For a minimum add, we must make it symmetric.
+     * 
+     *  */
 
+    for(int i = 0; i < side; i++) {
+        for(int j = i + 1; j < side; j++) {
+            if(links[(i * side) + j] != links [(j * side) + i]) {
+                
+                links[(i * side) + j] = 1;
+                links [(j * side) + i] = 1;
+            }
+        }
+    }
+}
 
 int* reachable_to_all(unsigned int* links, int* websites, unsigned int side){
     /* returns an array, 1 for websites which can be reached from all, and 0 for those which can't */
@@ -101,8 +120,10 @@ int self_linking_websites(unsigned int* links, unsigned int side){
     return 0;
 }
 
-void to_self_linking_websites(unsigned int* links){
-    links[0] = 1;
+void to_self_linking_websites(unsigned int* links, int side){
+    for(int i = 0; i < side; i++){
+        links[(side + 1) * i] = 1;
+    }
 }
 
 int* self_centred_websites_from(unsigned int* links, int* websites, unsigned int side){
@@ -200,7 +221,7 @@ void matrix_to_hasse(unsigned int* links, unsigned int* hasse_links, int side){
 
 
 int print_main_menu() {
-    printf("1. Does every website has a link to itself?\n");
+    printf("\n1. Does every website has a link to itself?\n");
     printf("2. Is it possible to always return back to the previous website from the current website in one step?\n");
     printf("3. Does every website has all th links to the websites which are reachable from it?\n");
     printf("4. Does there exist any website that contains a link to itself?\n");

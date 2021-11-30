@@ -4,9 +4,9 @@
 #include<string.h>
 
 #include"definitions.h"
-#include"csv_handler.c"
-#include"hasse.c"
+#include"visualiser.c"
 #include"helper.c"
+#include"csv_handler.c"
 #include"menu_5.c"
 #include"menu_4.c"
 #include"menu_2_3.c"
@@ -65,7 +65,7 @@ int main() {
                            is_anti_symmetric(links, website_count) && 
                            is_reflexive(links, website_count);
 
-            if (print_yes_or_no(is_poset))
+            if (print_yes_or_no(is_poset == 0))
                 menu_4_handler(website_names, links, website_count);
             break;
 

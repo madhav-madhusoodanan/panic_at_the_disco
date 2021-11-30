@@ -1,4 +1,4 @@
-#include<definitions.h>
+#include"definitions.h"
 
 int print_menu_2() {
     char input = ' ';
@@ -27,13 +27,15 @@ void menu_2_handler(char* website_names[], int* links, int website_count, int me
     printf("\nDo you want to know how the network will look like if we add minimum links to satisfy property? [y/n]");
 
     char c;
-    scanf("%c", &c);
+    scanf(" %c", &c);
     if(c == 'n') return;
 
     switch(menu){
         case 1:
+            to_self_linking_websites(links, website_count);
             break;
         case 2:
+            to_symmetric(links, website_count);
             break;
         case 3:
             break;

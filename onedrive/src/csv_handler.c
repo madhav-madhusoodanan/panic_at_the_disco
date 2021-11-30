@@ -1,7 +1,26 @@
-#include"definitions.h"
 #include<stdio.h>
-void convert_to_csv(char* websites[], unsigned int* links, unsigned int website_count);
-void extract(char* websites[], unsigned int* links, char* file);
+#include"definitions.h"
+
+unsigned int count_number_of_websites(char* file) {
+    /* 
+     * Just counting the number of websites will be taking into consideration
+     * I'll simply count the number of lines, subtract 1 and return
+     * ( because the 1st line displays the list of the websites, 
+     * while the rest of the lines shows the links of each of the websites)
+     * 
+     *  */
+
+    unsigned int count = 0;
+    char dummy[100];
+    FILE *fp = fopen(file, "r");
+
+    while (fscanf(fp, "%s", dummy) == 1){
+        count += 1;
+    }
+
+    return (count - 1);
+}
+
 
 void convert_to_csv(char* websites[], unsigned int* links, unsigned int website_count){
     FILE* fp;
@@ -63,4 +82,5 @@ void extract(char* websites[], unsigned int* links, char* file) {
         // printf("\n");
     }
 }
+
 
