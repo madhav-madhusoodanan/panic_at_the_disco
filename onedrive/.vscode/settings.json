@@ -9,6 +9,7 @@
         "limits": "c",
         "mutex": "c",
         "streambuf": "c",
-        "thread": "c"
+        "thread": "c",
+        "stdio.h": "c"
     }
 }

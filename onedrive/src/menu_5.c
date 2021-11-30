@@ -38,3 +38,73 @@ int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
             break;
     }
 }
+
+int* lub_for_two_websites(unsigned int* links, int* websites_in_question, int* websites, unsigned int side){
+    /* websites in question have the indices of the websites in question, not 0 or 1 */
+    /* they are of size 2, (a and b) */
+
+    for (int i = 0; i < side; i++)
+    {
+        /* 1. find out websites that are common destination
+            2. find out if all 3 have the same destinations including the 3rd one */
+        websites[i] = 0;
+
+        int a_coordinate = websites_in_question[0] * side + i;
+        int b_coordinate = websites_in_question[1] * side + i;
+        if(links[a_coordinate] && links[b_coordinate]) websites[i] = 1;
+    }
+
+    websites[websites_in_question[0]] = 1;
+    websites[websites_in_question[1]] = 1;
+    
+    for (int i = 0; i < side; i++)
+    {
+        for (int j = 0; j < side; j++)
+        {
+            if(websites[j]){
+                if(!links[j * side + i] && j != websites_in_question[0] && j != websites_in_question[1])
+                    websites[j] = 0;
+            }
+        }
+    }
+    
+    websites[websites_in_question[0]] = 0;
+    websites[websites_in_question[1]] = 0;
+
+    return websites;
+}
+
+int* glb_for_two_websites(unsigned int* links, int* websites_in_question, int* websites, unsigned int side){
+    /* websites in question have the indices of the websites in question, not 0 or 1 */
+    /* they are of size 2, (a and b) */
+
+    for (int i = 0; i < side; i++)
+    {
+        /* 1. find out websites that are common destination
+            2. find out if all 3 have the same destinations including the 3rd one */
+        websites[i] = 0;
+
+        int a_coordinate = websites_in_question[0] + side * i;
+        int b_coordinate = websites_in_question[1] + side * i;
+        if(links[a_coordinate] && links[b_coordinate]) websites[i] = 1;
+    }
+
+    websites[websites_in_question[0]] = 1;
+    websites[websites_in_question[1]] = 1;
+    
+    for (int i = 0; i < side; i++)
+    {
+        for (int j = 0; j < side; j++)
+        {
+            if(websites[j]){
+                if(!links[i * side + j] && j != websites_in_question[0] && j != websites_in_question[1])
+                    websites[j] = 0;
+            }
+        }
+    }
+    
+    websites[websites_in_question[0]] = 0;
+    websites[websites_in_question[1]] = 0;
+
+    return websites;
+}

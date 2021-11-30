@@ -1,8 +1,3 @@
-int* reachable_from_all(unsigned int* links, int* websites, unsigned int side);
-void menu_4_handler(char* names[], unsigned int* links, unsigned int side);
-int is_reflexive(unsigned int* links, unsigned int side);
-void print_website_names(char* names[], int* websites, unsigned int side);
-int priint_menu_4();
 
 int print_menu_4() {
     printf("1. Display the hasse diagram\n");
@@ -132,3 +127,62 @@ void print_website_names(char* names[], int* websites, unsigned int side){
         }
     }
 }
+
+int least_upper_bounds(unsigned int* links, unsigned int* websites, int side){
+    int i;
+    for (i = 0; i < side; i++)
+    {
+        websites[i] = 1;
+    }
+
+    for(int i=0; i < side; i++){
+        /* i is the index of the destination we are gonna check */
+
+        for(int j=0; j < side; j++){
+            /* the looping */
+            if(links[side * j + i] == 1) {
+                websites[i] = 0;
+                break;
+            }
+        }
+
+    }
+
+    int count = 0;
+    for (i = 0; i < side; i++)
+    {
+        count += websites[i];
+    }
+    
+    return (count == 1);
+}
+
+int greatest_lower_bounds(unsigned int* links, unsigned int* websites, int side){
+    int i;
+    for (i = 0; i < side; i++)
+    {
+        websites[i] = 1;
+    }
+
+    for(int i=0; i < side; i++){
+        /* i is the index of the source we are gonna check */
+
+        for(int j=0; j < side; j++){
+            /* the looping */
+            if(links[j] == 1) {
+                websites[i] = 0;
+                break;
+            }
+        }
+
+    }
+
+    int count = 0;
+    for (i = 0; i < side; i++)
+    {
+        count += websites[i];
+    }
+    
+    return (count == 1);
+}
+
