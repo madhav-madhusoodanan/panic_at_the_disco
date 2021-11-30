@@ -679,11 +679,12 @@ void menu_4_handler(char* names[], unsigned int* links, unsigned int side){
 
             case 8:
             /* check for lattice */
-                if(greatest_lower_bounds(links, websites, side) && least_upper_bounds(links, websites, side))
-                {
+                int bool_value = greatest_lower_bounds(links, websites, side) && least_upper_bounds(links, websites, side);
+                if(print_yes_or_no(bool_value))
                     menu_5_handler(names, links, side);
-                }
-                else printf("NO");
+                break;
+
+            default:
                 break;
         }
     }
@@ -707,13 +708,14 @@ int print_menu_5() {
 
 int main() {
     unsigned int website_count = count_number_of_websites("SampleInput.csv");
-    int is_poset;
     char* website_names[website_count];
     unsigned int links[website_count * website_count];
     extract(website_names, links, "SampleInput.csv");
     
     int option = 0;
     option = print_main_menu();
+    int is_poset;
+    
     while (option > 0 && option < 9) {
         switch (option)
         {
@@ -724,34 +726,30 @@ int main() {
         
         case 2:
             if (print_yes_or_no(is_symmetric(links, website_count) == 0))
-                menu_2_handler(website_names, links, website_count, 1);
+                menu_2_handler(website_names, links, website_count, 2);
             break;
 
         case 3: 
             /* just confirm what the question actually means... */
             if (print_yes_or_no(check_if_all_have_shortcuts(links, website_count) == 0))
-                    menu_2_handler(website_names, links, website_count, 1);
+                    menu_2_handler(website_names, links, website_count, 3);
             exit(0);
 
         case 4:
-            if (print_yes_or_no(self_linking_websites(links, website_count) == 0))
-                    menu_2_handler(website_names, links, website_count, 1);
+            print_yes_or_no(self_linking_websites(links, website_count) == 0);
             break;
 
         case 5:
-            if (print_yes_or_no(is_symmetric(links, website_count) == 1))
-            {
-                
-            }
+            print_yes_or_no(is_symmetric(links, website_count) == 1);
             break;
 
         case 6:
         /* TODO confirm what the question means */
 
-        case 7: /* test */
-            /* print_website_names(website_names, arr, website_count); */ // THIS WORKS
+        case 7: 
+            /* complete this */
             if(1)
-                menu_2_handler(website_names, links, website_count, 1);
+                menu_2_handler(website_names, links, website_count, 7);
             break;
 
         case 8:
@@ -785,7 +783,10 @@ void menu_2_handler(char* website_names[], int* links, int website_count, int me
             break;
         case 3:
             break;
-        case 4:
+        case 7:
+            break;
+
+        default:
             break;
     }
 
