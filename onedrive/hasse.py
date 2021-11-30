@@ -25,8 +25,9 @@ def show_graph(adj,mylabels):
     gr = nx.path_graph(len(mylabels))
     gr.add_edges_from(edges)
     nx.draw(gr.to_undirected(),node_size=500,labels=mylabels,with_labels=True, arrows=False)
-    plt.show()
-    plt.close()
+    # plt.show()
+    # plt.close()
+    nx.draw(gr.to_undirected())
     
 mydata = genfromtxt(sys.argv[1], delimiter=',')
 adjacency = mydata[1:,1:]

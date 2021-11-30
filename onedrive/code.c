@@ -293,7 +293,6 @@ int* glb_for_two_websites(unsigned int* links, int* websites_in_question, int* w
     /* websites in question have the indices of the websites in question, not 0 or 1 */
     /* they are of size 2, (a and b) */
 
-    int websites[side];
     for (int i = 0; i < side; i++)
     {
         /* 1. find out websites that are common destination
@@ -607,6 +606,23 @@ int print_website_names_user_input(int* websites, unsigned int side){
     
 }
 
+
+
+int print_menu_5() {
+    printf("1. Given two websites A and B, display the website which is reachable by both A and B and can also reach to all such websites that both A and B can reach.\n");
+    printf("2. Given two websites A and B, display the website which can reach to both A and B and is also reachable from all such websites that can reach to both A and B\n");
+    printf("3. is the lattice distributable?\n");
+    printf("4. Return to menu 4\n");
+
+    printf("\n> ");
+
+    int option;
+    scanf("%d", &option);
+    return option;
+}
+
+
+
 int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
     int option;
     option = print_menu_5();
@@ -634,7 +650,7 @@ int menu_5_handler(char* names[], unsigned int* links, unsigned int side){
 
 void menu_4_handler(char* names[], unsigned int* links, unsigned int side){
 
-    int option;
+    int option, bool;
     int websites[side];
     option = print_menu_4();
 
@@ -679,8 +695,10 @@ void menu_4_handler(char* names[], unsigned int* links, unsigned int side){
 
             case 8:
             /* check for lattice */
-                int bool_value = greatest_lower_bounds(links, websites, side) && least_upper_bounds(links, websites, side);
-                if(print_yes_or_no(bool_value))
+                bool = greatest_lower_bounds(links, websites, side) && 
+                             least_upper_bounds(links, websites, side);
+
+                if(print_yes_or_no(bool))
                     menu_5_handler(names, links, side);
                 break;
 
@@ -691,19 +709,32 @@ void menu_4_handler(char* names[], unsigned int* links, unsigned int side){
 
 }
 
-int print_menu_5() {
-    printf("1. Given two websites A and B, display the website which is reachable by both A and B and can also reach to all such websites that both A and B can reach.\n");
-    printf("2. Given two websites A and B, display the website which can reach to both A and B and is also reachable from all such websites that can reach to both A and B\n");
-    printf("3. is the lattice distributable?\n");
-    printf("4. Return to menu 4\n");
 
-    printf("\n> ");
 
-    int option;
-    scanf("%d", &option);
-    return option;
+void menu_2_handler(char* website_names[], int* links, int website_count, int menu){
+    printf("\nDo you want to know how the network will look like if we add minimum links to satisfy property? [y/n]");
+
+    char c;
+    scanf("%c", &c);
+    if(c == 'n') return;
+
+    switch(menu){
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 7:
+            break;
+
+        default:
+            break;
+    }
+
+    convert_to_csv(website_names, links, website_count);
+    plot(TEMP_FILE);
 }
-
 
 
 int main() {
@@ -715,7 +746,7 @@ int main() {
     int option = 0;
     option = print_main_menu();
     int is_poset;
-    
+
     while (option > 0 && option < 9) {
         switch (option)
         {
@@ -745,6 +776,7 @@ int main() {
 
         case 6:
         /* TODO confirm what the question means */
+            plot(TEMP_FILE);
 
         case 7: 
             /* complete this */
@@ -769,30 +801,6 @@ int main() {
     cleanup(website_names, /* links, */ website_count);
 }
 
-void menu_2_handler(char* website_names[], int* links, int website_count, int menu){
-    printf("\nDo you want to know how the network will look like if we add minimum links to satisfy property? [y/n]");
-
-    char c;
-    scanf("%c", &c);
-    if(c == 'n') return;
-
-    switch(menu){
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 7:
-            break;
-
-        default:
-            break;
-    }
-
-    convert_to_csv(website_names, links, website_count);
-    plot(TEMP_FILE);
-}
 
 /* 
 
