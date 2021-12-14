@@ -1,14 +1,14 @@
 
 
-int is_transitive(unsigned int* links, unsigned int side){
-    for(int i = 0; i < side; i++){
-        for(int j = 0; j < side; j++){
-            for(int k = 0; k < side; k++){
+int is_transitive(unsigned int* links, unsigned int website_count){
+    for(int i = 0; i < website_count; i++){
+        for(int j = 0; j < website_count; j++){
+            for(int k = 0; k < website_count; k++){
                 if(
-                    links[i * side + j] &&
-                    links[j * side + k]
+                    links[i * website_count + j] &&
+                    links[j * website_count + k]
                 ) 
-                if(!links[i * side + k])
+                if(!links[i * website_count + k])
                     return 0;
             }
         }
@@ -17,29 +17,31 @@ int is_transitive(unsigned int* links, unsigned int side){
 }
 
 
-int is_there_a_shortcut(unsigned int* links, unsigned int side, unsigned int start, unsigned int end){
-    if(start == end) return 1;
-    else if(links[start* side + end]) return 1;
+int is_there_a_shortcut(unsigned int* links, unsigned int website_count, unsigned int start, unsigned int end){
+    if(links[start * website_count + end]) return 1;
 
-    for(int i = 0; i < side; i++){
-        if(links[start * side + i] && is_there_a_shortcut(links, side, i, end)) return 1;
-    }
+    printf("\n%d\t%d", start, end);
+    for(int i = 0; i < website_count; i++)
+        if(links[start * website_count + i]) 
+            if(is_there_a_shortcut(links, website_count, i, end))
+                return 1;
+
     return 0;
 }
 
-int check_if_all_have_shortcuts(unsigned int* links, unsigned int side){
-    for(int i = 0; i < side; i++){
-        for(int j = 0; j < side; j++){
-            if(is_there_a_shortcut(links, side, i, j) == 0) return 0;
-        }
-    }
+int check_if_all_have_shortcuts(unsigned int* links, unsigned int website_count){
+    for(int i = 0; i < website_count; i++)
+        for(int j = 0; j < website_count; j++)
+            if(is_there_a_shortcut(links, website_count, i, j) == 0) 
+                return 0;
+
     return 1;
 }
 
-int is_anti_symmetric(unsigned int* links, unsigned int side){
-    for(int i = 0; i < side; i++) {
-        for(int j = i + 1; j < side; j++) {
-            if(links[(i * side) + j] == 1 && links [(j * side) + i] == 1) {
+int is_anti_symmetric(unsigned int* links, unsigned int website_count){
+    for(int i = 0; i < website_count; i++) {
+        for(int j = i + 1; j < website_count; j++) {
+            if(i != j && links[(i * website_count) + j] && links [(j * website_count) + i]) {
                 return 0;
             }
         }
@@ -47,7 +49,7 @@ int is_anti_symmetric(unsigned int* links, unsigned int side){
     return 1;
 }
 
-int is_symmetric(unsigned int* links, unsigned int side) {
+int is_symmetric(unsigned int* links, unsigned int website_count) {
     /* 
      * Symmetric matrices means a matrix whose transpose will equal itself.
      * the speciality of this matrix is that it is possible to go to the previous website from the current website
@@ -57,9 +59,9 @@ int is_symmetric(unsigned int* links, unsigned int side) {
      * 
      *  */
 
-    for(int i = 0; i < side; i++) {
-        for(int j = i + 1; j < side; j++) {
-            if(links[(i * side) + j] != links [(j * side) + i]) {
+    for(int i = 0; i < website_count; i++) {
+        for(int j = i + 1; j < website_count; j++) {
+            if(links[(i * website_count) + j] != links [(j * website_count) + i]) {
                 return 0;
             }
         }
@@ -67,7 +69,7 @@ int is_symmetric(unsigned int* links, unsigned int side) {
     return 1;
 }
 
-void to_symmetric(unsigned int* links, unsigned int side) {
+void to_symmetric(unsigned int* links, unsigned int website_count) {
     /* 
      * Symmetric matrices means a matrix whose transpose will equal itself.
      * the speciality of this matrix is that it is possible to go to the previous website from the current website
@@ -77,30 +79,30 @@ void to_symmetric(unsigned int* links, unsigned int side) {
      * 
      *  */
 
-    for(int i = 0; i < side; i++) {
-        for(int j = i + 1; j < side; j++) {
-            if(links[(i * side) + j] != links [(j * side) + i]) {
+    for(int i = 0; i < website_count; i++) {
+        for(int j = i + 1; j < website_count; j++) {
+            if(links[(i * website_count) + j] != links [(j * website_count) + i]) {
                 
-                links[(i * side) + j] = 1;
-                links [(j * side) + i] = 1;
+                links[(i * website_count) + j] = 1;
+                links [(j * website_count) + i] = 1;
             }
         }
     }
 }
 
-int* reachable_to_all(unsigned int* links, int* websites, unsigned int side){
+int* reachable_to_all(unsigned int* links, int* websites, unsigned int website_count){
     /* returns an array, 1 for websites which can be reached from all, and 0 for those which can't */
 
-    for (int i = 0; i < side; i++)
+    for (int i = 0; i < website_count; i++)
     {
         websites[i] = 1;
     }
     
 
-    for(int i=0; i < side; i++){
+    for(int i=0; i < website_count; i++){
         /* i is the index of the source we are gonna check */
 
-        for(int j=0; j < side; j++){
+        for(int j=0; j < website_count; j++){
             /* the looping */
             if(links[j] != 1) {
                 websites[i] = 0;
@@ -113,37 +115,37 @@ int* reachable_to_all(unsigned int* links, int* websites, unsigned int side){
     return websites;
 }
 
-int self_linking_websites(unsigned int* links, unsigned int side){
-    for(int i = 0; i < side; i++){
-        if(links[i * (side + 1)] == 1) return 1;
+int self_linking_websites(unsigned int* links, unsigned int website_count){
+    for(int i = 0; i < website_count; i++){
+        if(links[i * (website_count + 1)] == 1) return 1;
     }
     return 0;
 }
 
-void to_self_linking_websites(unsigned int* links, int side){
-    for(int i = 0; i < side; i++){
-        links[(side + 1) * i] = 1;
+void to_self_linking_websites(unsigned int* links, int website_count){
+    for(int i = 0; i < website_count; i++){
+        links[(website_count + 1) * i] = 1;
     }
 }
 
-int* self_centred_websites_from(unsigned int* links, int* websites, unsigned int side){
+int* self_centred_websites_from(unsigned int* links, int* websites, unsigned int website_count){
 
-    for (int i = 0; i < side; i++)
+    for (int i = 0; i < website_count; i++)
     {
         websites[i] = 1;
     }
     
 
-    for(int i=0; i < side; i++){
+    for(int i=0; i < website_count; i++){
         /* i is the index of the source we are gonna check */
 
-        for(int j=0; j < side; j++){
+        for(int j=0; j < website_count; j++){
             /* the looping */
-            if(i != j && links[i * side + j] == 1) {
+            if(i != j && links[i * website_count + j] == 1) {
                 websites[j] = 0;
                 break;
             }
-            if(i == j && links[i * side + j] == 0){
+            if(i == j && links[i * website_count + j] == 0){
                 websites[j] = 0;
                 break;
             }
@@ -155,33 +157,33 @@ int* self_centred_websites_from(unsigned int* links, int* websites, unsigned int
 }
 
 
-int* check_for_lattice(unsigned int* links, int* websites, unsigned int side){
+int* check_for_lattice(unsigned int* links, int* websites, unsigned int website_count){
     return websites;
 }
 
-int* check_for_fully_linked_pieces(unsigned int* links, int* websites, unsigned int side){
+int* check_for_fully_linked_pieces(unsigned int* links, int* websites, unsigned int website_count){
     /* check for pieces */
     return websites;
 }
 
-int* self_centred_websites_to(unsigned int* links, int* websites, unsigned int side){
+int* self_centred_websites_to(unsigned int* links, int* websites, unsigned int website_count){
 
-    for (int i = 0; i < side; i++)
+    for (int i = 0; i < website_count; i++)
     {
         websites[i] = 1;
     }
     
 
-    for(int i=0; i < side; i++){
+    for(int i=0; i < website_count; i++){
         /* i is the index of the source we are gonna check */
 
-        for(int j=0; j < side; j++){
+        for(int j=0; j < website_count; j++){
             /* the looping */
-            if(i != j && links[i * side + j] == 1) {
+            if(i != j && links[i * website_count + j] == 1) {
                 websites[i] = 0;
                 break;
             }
-            if(i == j && links[i * side + j] == 0){
+            if(i == j && links[i * website_count + j] == 0){
                 websites[i] = 0;
                 break;
             }
@@ -194,25 +196,25 @@ int* self_centred_websites_to(unsigned int* links, int* websites, unsigned int s
 
 
 
-void matrix_to_hasse(unsigned int* links, unsigned int* hasse_links, int side){
-    for (int i = 0; i < side; i++)
+void matrix_to_hasse(unsigned int* links, unsigned int* hasse_links, int website_count){
+    for (int i = 0; i < website_count; i++)
     {
-        links[(side + 1) * i] = 0;
+        links[(website_count + 1) * i] = 0;
     }
 
-    for (int i = 0; i < side; i++)
+    for (int i = 0; i < website_count; i++)
     {
-        for (int j = 0; j < side; j++)
+        for (int j = 0; j < website_count; j++)
         {
             if(i == j) break;
 
-            for (int k = 0; k < side; k++)
+            for (int k = 0; k < website_count; k++)
             {
                 if(j == k || i == k)
                     break;
 
-                if(links[i * side + j] && links[j * side + k] && links[i * side + k]) 
-                    links[i * side + k] = 0;
+                if(links[i * website_count + j] && links[j * website_count + k] && links[i * website_count + k]) 
+                    links[i * website_count + k] = 0;
             }
         }
     }

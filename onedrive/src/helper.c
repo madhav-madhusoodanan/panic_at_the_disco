@@ -67,7 +67,7 @@ char stringify(int number){
 
 
 
-int print_website_names_user_input(int* websites, unsigned int side){
+int print_website_names_user_input(int* websites, unsigned int website_count){
     char input[5];
     int index = 0;
 
@@ -76,7 +76,7 @@ int print_website_names_user_input(int* websites, unsigned int side){
     for (; input[0] !='q' ;)
     {
         sscanf(input, "%d", &index);
-        if(index > 0 && index < side && websites[index] == 1) printf("YES");
+        if(index > 0 && index < website_count && websites[index] == 1) printf("YES");
         else printf("NO");
         
         scanf("%s", input);
